@@ -12,11 +12,14 @@ client.interceptors.request.use((config) => {
   return config;
 });
 
+export const AUTH_EXPIRED_EVENT = "auth:expired";
+
 client.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401 || error.response?.status === 403) {
       localStorage.removeItem("accessToken");
+      window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT));
     }
     return Promise.reject(error);
   }
