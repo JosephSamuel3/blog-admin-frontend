@@ -8,6 +8,7 @@ type AuthContextValue = {
     user: authApi.AuthUser | null,
     login: (input: authApi.LoginInput) => Promise<void>,
     logout: () => Promise<void>,
+    refreshUser: () => Promise<void>,
     isAuthenticated: boolean
     isLoading: boolean
 }
@@ -50,10 +51,15 @@ export function AuthProvider ({ children }: { children: ReactNode }){
         }
     };
 
+    const refreshUser = async () => {
+        const profile = await getProfile();
+        setUser(profile);
+    };
+
     const isAuthenticated = !!user;
 
     return (
-        <AuthContext.Provider value = {{ user, login, logout, isLoading, isAuthenticated}}>
+        <AuthContext.Provider value = {{ user, login, logout, refreshUser, isLoading, isAuthenticated}}>
             { children }
         </AuthContext.Provider>
     )

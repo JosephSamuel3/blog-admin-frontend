@@ -1,4 +1,5 @@
 import client from "./client";
+import { getProfile } from "./user";
 
 export type Role = "ADMIN" | "USER";
 
@@ -26,12 +27,15 @@ export type AuthResponse = {
   user: AuthUser
 };
 
-
+export type LoginResponse = {
+  accessToken: string;
+};
 
 export const login = async (input: LoginInput) => {
-  const { data } = await client.post<AuthResponse>("/auth/login", input);
+  const { data } = await client.post<LoginResponse>("/auth/login", input);
   localStorage.setItem("accessToken", data.accessToken);
-  return data;
+  const user = await getProfile();
+  return { accessToken: data.accessToken, user };
 };
 
 export const signUp = async (input: SignUpInput) => {
