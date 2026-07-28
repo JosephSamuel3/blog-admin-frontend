@@ -7,6 +7,7 @@ import { AUTH_EXPIRED_EVENT } from "../api/client";
 type AuthContextValue = {
     user: authApi.AuthUser | null,
     login: (input: authApi.LoginInput) => Promise<void>,
+    signUp: (input: authApi.SignUpInput) => Promise<void>,
     logout: () => Promise<void>,
     refreshUser: () => Promise<void>,
     isAuthenticated: boolean
@@ -43,6 +44,11 @@ export function AuthProvider ({ children }: { children: ReactNode }){
         setUser(user)
     };
 
+    const signUp = async(input: authApi.SignUpInput) => {
+        const { user } = await authApi.signUp(input);
+        setUser(user)
+    };
+
     const logout = async() => {
         try {
             await authApi.logout();
@@ -59,7 +65,7 @@ export function AuthProvider ({ children }: { children: ReactNode }){
     const isAuthenticated = !!user;
 
     return (
-        <AuthContext.Provider value = {{ user, login, logout, refreshUser, isLoading, isAuthenticated}}>
+        <AuthContext.Provider value = {{ user, login, signUp, logout, refreshUser, isLoading, isAuthenticated}}>
             { children }
         </AuthContext.Provider>
     )

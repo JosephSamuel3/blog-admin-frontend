@@ -1,20 +1,19 @@
 import { useState, type FormEvent } from "react";
-import { Link, Navigate, useLocation, useNavigate } from "react-router";
+import { Link, Navigate, useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 
-export default function LoginPage() {
-  const { login, isAuthenticated } = useAuth();
+export default function SignupPage() {
+  const { signUp, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (isAuthenticated) {
-    const redirectTo = (location.state as { from?: string } | null)?.from ?? "/dashboard";
-    return <Navigate to={redirectTo} replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   const handleSubmit = async (event: FormEvent) => {
@@ -22,10 +21,10 @@ export default function LoginPage() {
     setError(null);
     setIsSubmitting(true);
     try {
-      await login({ email, password });
+      await signUp({ email, username, password });
       navigate("/dashboard", { replace: true });
     } catch {
-      setError("Invalid email or password.");
+      setError("Could not create account. Please check your details and try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -35,7 +34,7 @@ export default function LoginPage() {
     <div className="auth-page">
       <form className="card auth-card" onSubmit={handleSubmit}>
         <h1>Blog Admin</h1>
-        <p className="muted">Sign in to manage posts.</p>
+        <p className="muted">Create an account to manage posts.</p>
         {error && <p className="form-error">{error}</p>}
         <label>
           Email
@@ -48,6 +47,15 @@ export default function LoginPage() {
           />
         </label>
         <label>
+          Username
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </label>
+        <label>
           Password
           <input
             type="password"
@@ -57,10 +65,10 @@ export default function LoginPage() {
           />
         </label>
         <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Signing in…" : "Sign in"}
+          {isSubmitting ? "Creating account…" : "Sign up"}
         </button>
         <p className="muted">
-          Don't have an account? <Link to="/signup">Sign up</Link>
+          Already have an account? <Link to="/login">Sign in</Link>
         </p>
       </form>
     </div>

@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Layout } from "./components/Layout";
 import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 import DashboardPage from "./pages/DashboardPage";
 import Profile from "./pages/Profile";
 import PostsPage from "./pages/posts/PostsPage";
@@ -13,6 +14,7 @@ export function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
