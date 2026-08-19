@@ -284,3 +284,44 @@ button:disabled {
 .page-loading {
   padding: 24px;
 }
+
+.comments-section {
+  margin-top: 24px;
+  margin-bottom: 0;
+}
+
+.comment-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comment-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.comment-item:last-child {
+  border-bottom: none;
+}
+
+.comment-body {
+  flex: 1;
+}
+
+.comment-meta {
+  margin: 0 0 4px;
+  font-size: 14px;
+}
+
+.comment-content {
+  margin: 0;
+  white-space: pre-wrap;
+}
